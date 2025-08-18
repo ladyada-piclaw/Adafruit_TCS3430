@@ -85,28 +85,51 @@ bool Adafruit_TCS3430::begin(uint8_t addr, TwoWire* theWire) {
   return true;
 }
 
+/*!
+ *    @brief  Set integration cycles
+ *    @param  cycles Number of integration cycles (1-256)
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::setIntegrationCycles(uint8_t cycles) {
   Adafruit_BusIO_Register atime_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_ATIME);
   return atime_reg.write(cycles);
 }
 
+/*!
+ *    @brief  Get integration cycles
+ *    @return Current integration cycles
+ */
 uint8_t Adafruit_TCS3430::getIntegrationCycles() {
   Adafruit_BusIO_Register atime_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_ATIME);
   return atime_reg.read();
 }
 
+/*!
+ *    @brief  Set integration time in milliseconds
+ *    @param  ms Integration time in ms
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::setIntegrationTime(float ms) {
   uint8_t cycles = (uint8_t)((ms / 2.78) - 1);
   return setIntegrationCycles(cycles);
 }
 
+/*!
+ *    @brief  Get integration time in milliseconds
+ *    @return Integration time in ms
+ */
 float Adafruit_TCS3430::getIntegrationTime() {
   uint8_t cycles = getIntegrationCycles();
   return (cycles + 1) * 2.78;
 }
 
+/*!
+ *    @brief  Enable/disable wait functionality
+ *    @param  enable true to enable wait
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::waitEnable(bool enable) {
   Adafruit_BusIO_Register enable_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_ENABLE);
@@ -115,6 +138,10 @@ bool Adafruit_TCS3430::waitEnable(bool enable) {
   return wen_bit.write(enable);
 }
 
+/*!
+ *    @brief  Check if wait is enabled
+ *    @return true if wait is enabled
+ */
 bool Adafruit_TCS3430::isWaitEnabled() {
   Adafruit_BusIO_Register enable_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_ENABLE);
@@ -123,6 +150,11 @@ bool Adafruit_TCS3430::isWaitEnabled() {
   return wen_bit.read();
 }
 
+/*!
+ *    @brief  Enable/disable ALS functionality
+ *    @param  enable true to enable ALS
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::ALSEnable(bool enable) {
   Adafruit_BusIO_Register enable_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_ENABLE);
@@ -131,6 +163,10 @@ bool Adafruit_TCS3430::ALSEnable(bool enable) {
   return aen_bit.write(enable);
 }
 
+/*!
+ *    @brief  Check if ALS is enabled
+ *    @return true if ALS is enabled
+ */
 bool Adafruit_TCS3430::isALSEnabled() {
   Adafruit_BusIO_Register enable_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_ENABLE);
@@ -139,6 +175,11 @@ bool Adafruit_TCS3430::isALSEnabled() {
   return aen_bit.read();
 }
 
+/*!
+ *    @brief  Power on/off the sensor
+ *    @param  enable true to power on
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::powerOn(bool enable) {
   Adafruit_BusIO_Register enable_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_ENABLE);
@@ -147,6 +188,10 @@ bool Adafruit_TCS3430::powerOn(bool enable) {
   return pon_bit.write(enable);
 }
 
+/*!
+ *    @brief  Check if sensor is powered on
+ *    @return true if powered on
+ */
 bool Adafruit_TCS3430::isPoweredOn() {
   Adafruit_BusIO_Register enable_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_ENABLE);
@@ -155,52 +200,93 @@ bool Adafruit_TCS3430::isPoweredOn() {
   return pon_bit.read();
 }
 
+/*!
+ *    @brief  Set wait cycles
+ *    @param  cycles Number of wait cycles
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::setWaitCycles(uint8_t cycles) {
   Adafruit_BusIO_Register wtime_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_WTIME);
   return wtime_reg.write(cycles);
 }
 
+/*!
+ *    @brief  Get wait cycles
+ *    @return Current wait cycles
+ */
 uint8_t Adafruit_TCS3430::getWaitCycles() {
   Adafruit_BusIO_Register wtime_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_WTIME);
   return wtime_reg.read();
 }
 
+/*!
+ *    @brief  Set wait time in milliseconds
+ *    @param  ms Wait time in ms
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::setWaitTime(float ms) {
   uint8_t cycles = (uint8_t)((ms / 2.78) - 1);
   return setWaitCycles(cycles);
 }
 
+/*!
+ *    @brief  Get wait time in milliseconds
+ *    @return Wait time in ms
+ */
 float Adafruit_TCS3430::getWaitTime() {
   uint8_t cycles = getWaitCycles();
   return (cycles + 1) * 2.78;
 }
 
+/*!
+ *    @brief  Set ALS low threshold
+ *    @param  threshold Low threshold value
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::setALSThresholdLow(uint16_t threshold) {
   Adafruit_BusIO_Register threshold_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_AILTL, 2, LSBFIRST);
   return threshold_reg.write(threshold);
 }
 
+/*!
+ *    @brief  Get ALS low threshold
+ *    @return Current low threshold value
+ */
 uint16_t Adafruit_TCS3430::getALSThresholdLow() {
   Adafruit_BusIO_Register threshold_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_AILTL, 2, LSBFIRST);
   return threshold_reg.read();
 }
 
+/*!
+ *    @brief  Set ALS high threshold
+ *    @param  threshold High threshold value
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::setALSThresholdHigh(uint16_t threshold) {
   Adafruit_BusIO_Register threshold_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_AIHTL, 2, LSBFIRST);
   return threshold_reg.write(threshold);
 }
 
+/*!
+ *    @brief  Get ALS high threshold
+ *    @return Current high threshold value
+ */
 uint16_t Adafruit_TCS3430::getALSThresholdHigh() {
   Adafruit_BusIO_Register threshold_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_AIHTL, 2, LSBFIRST);
   return threshold_reg.read();
 }
 
+/*!
+ *    @brief  Set interrupt persistence
+ *    @param  persistence Persistence setting
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::setInterruptPersistence(tcs3430_pers_t persistence) {
   Adafruit_BusIO_Register pers_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_PERS);
@@ -209,6 +295,10 @@ bool Adafruit_TCS3430::setInterruptPersistence(tcs3430_pers_t persistence) {
   return apers_bits.write(persistence);
 }
 
+/*!
+ *    @brief  Get interrupt persistence
+ *    @return Current persistence setting
+ */
 tcs3430_pers_t Adafruit_TCS3430::getInterruptPersistence() {
   Adafruit_BusIO_Register pers_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_PERS);
@@ -242,6 +332,11 @@ bool Adafruit_TCS3430::getWaitLong() {
   return wlong_bit.read();
 }
 
+/*!
+ *    @brief  Set ALS MUX to IR2 or X channel
+ *    @param  enable true for IR2, false for X channel
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::setALSMUX_IR2(bool enable) {
   Adafruit_BusIO_Register cfg1_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_CFG1);
@@ -250,6 +345,10 @@ bool Adafruit_TCS3430::setALSMUX_IR2(bool enable) {
   return amux_bit.write(enable);
 }
 
+/*!
+ *    @brief  Get ALS MUX setting
+ *    @return true if IR2 channel, false if X channel
+ */
 bool Adafruit_TCS3430::getALSMUX_IR2() {
   Adafruit_BusIO_Register cfg1_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_CFG1);
@@ -258,6 +357,11 @@ bool Adafruit_TCS3430::getALSMUX_IR2() {
   return amux_bit.read();
 }
 
+/*!
+ *    @brief  Set ALS gain
+ *    @param  gain Gain setting
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::setALSGain(tcs3430_gain_t gain) {
   Adafruit_BusIO_Register cfg1_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_CFG1);
@@ -284,6 +388,10 @@ bool Adafruit_TCS3430::setALSGain(tcs3430_gain_t gain) {
   return true;
 }
 
+/*!
+ *    @brief  Get ALS gain
+ *    @return Current gain setting
+ */
 tcs3430_gain_t Adafruit_TCS3430::getALSGain() {
   Adafruit_BusIO_Register cfg1_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_CFG1);
@@ -304,6 +412,10 @@ tcs3430_gain_t Adafruit_TCS3430::getALSGain() {
   return (tcs3430_gain_t)again_val;
 }
 
+/*!
+ *    @brief  Check if ALS is saturated
+ *    @return true if saturated
+ */
 bool Adafruit_TCS3430::isALSSaturated() {
   Adafruit_BusIO_Register status_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_STATUS);
@@ -312,6 +424,10 @@ bool Adafruit_TCS3430::isALSSaturated() {
   return asat_bit.read();
 }
 
+/*!
+ *    @brief  Clear ALS saturation flag
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::clearALSSaturated() {
   Adafruit_BusIO_Register status_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_STATUS);
@@ -320,6 +436,10 @@ bool Adafruit_TCS3430::clearALSSaturated() {
   return asat_bit.write(1);
 }
 
+/*!
+ *    @brief  Check if ALS interrupt is active
+ *    @return true if interrupt is active
+ */
 bool Adafruit_TCS3430::isALSInterrupt() {
   Adafruit_BusIO_Register status_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_STATUS);
@@ -328,6 +448,10 @@ bool Adafruit_TCS3430::isALSInterrupt() {
   return aint_bit.read();
 }
 
+/*!
+ *    @brief  Clear ALS interrupt flag
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::clearALSInterrupt() {
   Adafruit_BusIO_Register status_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_STATUS);
@@ -336,6 +460,12 @@ bool Adafruit_TCS3430::clearALSInterrupt() {
   return aint_bit.write(1);
 }
 
+/*!
+ *    @brief  Get sensor data for X, Y, Z channels
+ *    @param  x Pointer to store X channel data
+ *    @param  y Pointer to store Y channel data
+ *    @param  z Pointer to store Z channel data
+ */
 void Adafruit_TCS3430::getData(uint16_t* x, uint16_t* y, uint16_t* z) {
   uint8_t buffer[6];
   Adafruit_BusIO_Register data_reg =
@@ -347,6 +477,11 @@ void Adafruit_TCS3430::getData(uint16_t* x, uint16_t* y, uint16_t* z) {
   *x = buffer[4] | ((uint16_t)buffer[5] << 8);
 }
 
+/*!
+ *    @brief  Set interrupt clear on read mode
+ *    @param  enable true to enable clear on read
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::setInterruptClearOnRead(bool enable) {
   Adafruit_BusIO_Register cfg3_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_CFG3);
@@ -355,6 +490,10 @@ bool Adafruit_TCS3430::setInterruptClearOnRead(bool enable) {
   return int_read_clear_bit.write(enable);
 }
 
+/*!
+ *    @brief  Get interrupt clear on read mode
+ *    @return true if clear on read is enabled
+ */
 bool Adafruit_TCS3430::getInterruptClearOnRead() {
   Adafruit_BusIO_Register cfg3_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_CFG3);
@@ -363,6 +502,11 @@ bool Adafruit_TCS3430::getInterruptClearOnRead() {
   return int_read_clear_bit.read();
 }
 
+/*!
+ *    @brief  Set sleep after interrupt mode
+ *    @param  enable true to enable sleep after interrupt
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::setSleepAfterInterrupt(bool enable) {
   Adafruit_BusIO_Register cfg3_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_CFG3);
@@ -371,6 +515,10 @@ bool Adafruit_TCS3430::setSleepAfterInterrupt(bool enable) {
   return sai_bit.write(enable);
 }
 
+/*!
+ *    @brief  Get sleep after interrupt mode
+ *    @return true if sleep after interrupt is enabled
+ */
 bool Adafruit_TCS3430::getSleepAfterInterrupt() {
   Adafruit_BusIO_Register cfg3_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_CFG3);
@@ -379,6 +527,11 @@ bool Adafruit_TCS3430::getSleepAfterInterrupt() {
   return sai_bit.read();
 }
 
+/*!
+ *    @brief  Set auto-zero mode
+ *    @param  enable true to enable auto-zero
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::setAutoZeroMode(bool enable) {
   Adafruit_BusIO_Register az_config_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_AZ_CONFIG);
@@ -387,6 +540,10 @@ bool Adafruit_TCS3430::setAutoZeroMode(bool enable) {
   return az_mode_bit.write(enable);
 }
 
+/*!
+ *    @brief  Get auto-zero mode
+ *    @return true if auto-zero is enabled
+ */
 bool Adafruit_TCS3430::getAutoZeroMode() {
   Adafruit_BusIO_Register az_config_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_AZ_CONFIG);
@@ -395,6 +552,11 @@ bool Adafruit_TCS3430::getAutoZeroMode() {
   return az_mode_bit.read();
 }
 
+/*!
+ *    @brief  Set auto-zero interval
+ *    @param  n Run auto-zero every N measurements
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::setRunAutoZeroEveryN(uint8_t n) {
   Adafruit_BusIO_Register az_config_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_AZ_CONFIG);
@@ -403,6 +565,10 @@ bool Adafruit_TCS3430::setRunAutoZeroEveryN(uint8_t n) {
   return az_nth_bits.write(n);
 }
 
+/*!
+ *    @brief  Get auto-zero interval
+ *    @return Auto-zero interval (every N measurements)
+ */
 uint8_t Adafruit_TCS3430::getRunAutoZeroEveryN() {
   Adafruit_BusIO_Register az_config_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_AZ_CONFIG);
@@ -411,6 +577,11 @@ uint8_t Adafruit_TCS3430::getRunAutoZeroEveryN() {
   return az_nth_bits.read();
 }
 
+/*!
+ *    @brief  Enable/disable saturation interrupt
+ *    @param  enable true to enable saturation interrupt
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::enableSaturationInt(bool enable) {
   Adafruit_BusIO_Register intenab_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_INTENAB);
@@ -419,6 +590,11 @@ bool Adafruit_TCS3430::enableSaturationInt(bool enable) {
   return asien_bit.write(enable);
 }
 
+/*!
+ *    @brief  Enable/disable ALS interrupt
+ *    @param  enable true to enable ALS interrupt
+ *    @return true on success
+ */
 bool Adafruit_TCS3430::enableALSInt(bool enable) {
   Adafruit_BusIO_Register intenab_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_INTENAB);
