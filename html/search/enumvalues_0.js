@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['tcs3430_5fgain_5f128x',['TCS3430_GAIN_128X',['../_adafruit___t_c_s3430_8h.html#ad5e9a7aaabd9abe3efdb6520282dff17a6864ac2c2d7322e7dcc070ffe0fb06d0',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fgain_5f16x',['TCS3430_GAIN_16X',['../_adafruit___t_c_s3430_8h.html#ad5e9a7aaabd9abe3efdb6520282dff17a8f9bdd80a212b3f9fc4479129bcfc08e',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fgain_5f1x',['TCS3430_GAIN_1X',['../_adafruit___t_c_s3430_8h.html#ad5e9a7aaabd9abe3efdb6520282dff17a0ca3fc84ae81d15b1047338b7965c449',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fgain_5f4x',['TCS3430_GAIN_4X',['../_adafruit___t_c_s3430_8h.html#ad5e9a7aaabd9abe3efdb6520282dff17a231b409f6bf66fb372a979900f7b3beb',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fgain_5f64x',['TCS3430_GAIN_64X',['../_adafruit___t_c_s3430_8h.html#ad5e9a7aaabd9abe3efdb6520282dff17a2a72238c97a890def8019d2ae15e2d29',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f1',['TCS3430_PERS_1',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18a52e6abbe747d918f4d4f183c2a86a223',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f10',['TCS3430_PERS_10',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18a480f44404731d9ebe9035c5a8fbbb679',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f15',['TCS3430_PERS_15',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18a7e624e079c7f39db4ab91294cffc1ae7',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f2',['TCS3430_PERS_2',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18a64f2ce34d5d5b2653c144703d365196a',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f20',['TCS3430_PERS_20',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18a083e06ef3d496efbe4a9f8fe72f3d559',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f25',['TCS3430_PERS_25',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18a639772e38c61a1da29dd2b038b89bca0',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f3',['TCS3430_PERS_3',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18a67c736e852ade197906d8d1b60e893cf',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f30',['TCS3430_PERS_30',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18aa6dbe6766dfca1c9bff816bf20d7ae63',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f35',['TCS3430_PERS_35',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18acd568abcfdf80256ae4a8ec504747242',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f40',['TCS3430_PERS_40',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18ae0861c4d0d1b276ccfac1306aefc1018',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f45',['TCS3430_PERS_45',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18a2fefa92e0112062277284f15842645c5',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f5',['TCS3430_PERS_5',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18a6934687a3dfe5b9b618d34116feedcd9',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f50',['TCS3430_PERS_50',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18a1ef483dc80f8dee7470fb50c9643658a',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f55',['TCS3430_PERS_55',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18a762682c1a34027e32217efe94558fd2c',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5f60',['TCS3430_PERS_60',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18afcbdd8bbd8254f2ddc4a19960da41460',1,'Adafruit_TCS3430.h']]],
+  ['tcs3430_5fpers_5fevery',['TCS3430_PERS_EVERY',['../_adafruit___t_c_s3430_8h.html#ad8df91653f2174fa69c789ed69b45a18a73be9392383db0d186e488deddc480e8',1,'Adafruit_TCS3430.h']]]
+];

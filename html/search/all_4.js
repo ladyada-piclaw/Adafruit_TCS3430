@@ -1,0 +1,18 @@
+var searchData=
+[
+  ['getalsgain',['getALSGain',['../class_adafruit___t_c_s3430.html#af158076cdb710a748a0adc8cd07294be',1,'Adafruit_TCS3430']]],
+  ['getalsmux_5fir2',['getALSMUX_IR2',['../class_adafruit___t_c_s3430.html#a79254e24b0ac9c171aeaa4cfebe7fb90',1,'Adafruit_TCS3430']]],
+  ['getalsthresholdhigh',['getALSThresholdHigh',['../class_adafruit___t_c_s3430.html#a9f2992673a12a1267f301904c3a2f888',1,'Adafruit_TCS3430']]],
+  ['getalsthresholdlow',['getALSThresholdLow',['../class_adafruit___t_c_s3430.html#a1b4db96200e1ab898497291908f38475',1,'Adafruit_TCS3430']]],
+  ['getautozeromode',['getAutoZeroMode',['../class_adafruit___t_c_s3430.html#a78f0c13baa31309f16f0c42451de3957',1,'Adafruit_TCS3430']]],
+  ['getdata',['getData',['../class_adafruit___t_c_s3430.html#a68093d84fe1c319d8b7bfeb3930bc0e0',1,'Adafruit_TCS3430']]],
+  ['getintegrationcycles',['getIntegrationCycles',['../class_adafruit___t_c_s3430.html#a73a4bee8fce603e9fe38d6bc3a36f797',1,'Adafruit_TCS3430']]],
+  ['getintegrationtime',['getIntegrationTime',['../class_adafruit___t_c_s3430.html#a9b92b774672205743fe9bec2e35ee313',1,'Adafruit_TCS3430']]],
+  ['getinterruptclearonread',['getInterruptClearOnRead',['../class_adafruit___t_c_s3430.html#a0cdb6083bc5546bff95980f8922357e1',1,'Adafruit_TCS3430']]],
+  ['getinterruptpersistence',['getInterruptPersistence',['../class_adafruit___t_c_s3430.html#a527dd3ac526f81dfd84bb92682825031',1,'Adafruit_TCS3430']]],
+  ['getrunautozeroeveryn',['getRunAutoZeroEveryN',['../class_adafruit___t_c_s3430.html#a68e657bb29d51dd08648e6a4638f65c0',1,'Adafruit_TCS3430']]],
+  ['getsleepafterinterrupt',['getSleepAfterInterrupt',['../class_adafruit___t_c_s3430.html#aaadd975d7bda21231a05e5dc6c8b8396',1,'Adafruit_TCS3430']]],
+  ['getwaitcycles',['getWaitCycles',['../class_adafruit___t_c_s3430.html#a3a5e4aabb8dec5765ee57827a8b14725',1,'Adafruit_TCS3430']]],
+  ['getwaitlong',['getWaitLong',['../class_adafruit___t_c_s3430.html#aa652f377172c739d64b81b317fe21c4f',1,'Adafruit_TCS3430']]],
+  ['getwaittime',['getWaitTime',['../class_adafruit___t_c_s3430.html#a0e962eb30ea627ae788e4d4f4271bf9f',1,'Adafruit_TCS3430']]]
+];
