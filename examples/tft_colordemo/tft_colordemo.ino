@@ -1,8 +1,8 @@
 /*
  * TCS3430 Color Display Demo for ESP32-S2 TFT Feather
  *
- * Displays real-time XYZ channel bars, a color swatch approximating
- * the detected color, CIE x/y chromaticity, CCT, and lux on the
+ * Displays a live color swatch from XYZ tristimulus data,
+ * channel values, CIE chromaticity, CCT, and lux on the
  * built-in 1.14" TFT (240x135).
  *
  * Written by Limor 'ladyada' Fried with assistance from Claude Code for
@@ -12,20 +12,31 @@
 #include <Adafruit_ST7789.h>
 #include <Adafruit_TCS3430.h>
 #include <Fonts/FreeSans9pt7b.h>
+#include <Fonts/FreeSansBold12pt7b.h>
 
 Adafruit_TCS3430 tcs;
 Adafruit_ST7789 display = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
 GFXcanvas16 canvas(240, 135);
 
+const uint16_t SCREEN_W = 240;
+const uint16_t SCREEN_H = 135;
+const uint16_t TITLE_H = 17;
+const uint16_t LEFT_W = (SCREEN_W * 45) / 100;
+const uint16_t RIGHT_W = SCREEN_W - LEFT_W;
+
+const uint16_t SWATCH_MARGIN = 4;
+const uint16_t SWATCH_X = SWATCH_MARGIN;
+const uint16_t SWATCH_Y = TITLE_H + SWATCH_MARGIN;
+const uint16_t SWATCH_W = LEFT_W - (SWATCH_MARGIN * 2);
+const uint16_t SWATCH_H = SCREEN_H - TITLE_H - (SWATCH_MARGIN * 2);
+
 // Convert CIE XYZ to approximate RGB565 for the color swatch
-// Uses a simplified sRGB matrix + gamma
 static uint16_t xyzToRGB565(float X, float Y, float Z) {
   // XYZ to linear sRGB (D65)
   float r = 3.2406f * X - 1.5372f * Y - 0.4986f * Z;
   float g = -0.9689f * X + 1.8758f * Y + 0.0415f * Z;
   float b = 0.0557f * X - 0.2040f * Y + 1.0570f * Z;
 
-  // Clamp negatives
   if (r < 0)
     r = 0;
   if (g < 0)
@@ -57,33 +68,11 @@ static uint16_t xyzToRGB565(float X, float Y, float Z) {
   return ((r8 & 0xF8) << 8) | ((g8 & 0xFC) << 3) | (b8 >> 3);
 }
 
-// Bar colors for X, Y, Z, IR1
-const uint16_t barColors[4] = {
-    0xF800, // X — red
-    0x07E0, // Y — green
-    0x001F, // Z — blue
-    0x8010, // IR1 — purple
-};
-const char* barLabels[4] = {"X", "Y", "Z", "IR"};
-
-// Layout constants
-const uint16_t BAR_LEFT = 4;
-const uint16_t BAR_TOP = 18;
-const uint16_t BAR_BOTTOM = 100;
-const uint16_t BAR_WIDTH = 22;
-const uint16_t BAR_GAP = 6;
-const uint16_t SWATCH_X = 120;
-const uint16_t SWATCH_Y = 18;
-const uint16_t SWATCH_W = 50;
-const uint16_t SWATCH_H = 50;
-const uint16_t TEXT_X = 120;
-const uint16_t TEXT_Y = 78;
-
 void setup() {
   Serial.begin(115200);
   delay(100);
 
-  // Turn on TFT / I2C power
+  // Turn on the TFT / I2C power supply
   pinMode(TFT_I2C_POWER, OUTPUT);
   digitalWrite(TFT_I2C_POWER, HIGH);
   delay(100);
@@ -99,11 +88,12 @@ void setup() {
     canvas.setCursor(0, 40);
     canvas.setTextColor(ST77XX_RED);
     canvas.println(" TCS3430 not found!");
-    display.drawRGBBitmap(0, 0, canvas.getBuffer(), 240, 135);
+    display.drawRGBBitmap(0, 0, canvas.getBuffer(), SCREEN_W, SCREEN_H);
     while (1)
       delay(10);
   }
 
+  // Configure sensor
   tcs.setALSGain(TCS3430_GAIN_64X);
   tcs.setIntegrationTime(100.0f);
 
@@ -118,89 +108,67 @@ void loop() {
     return;
   }
 
-  uint16_t vals[4] = {x, y, z, ir1};
-
-  // Find max for auto-scaling bars
-  uint16_t maxVal = 1;
-  for (uint8_t i = 0; i < 4; i++) {
-    if (vals[i] > maxVal)
-      maxVal = vals[i];
-  }
-
-  canvas.fillScreen(ST77XX_BLACK);
-
-  // Title
-  canvas.setFont(&FreeSans9pt7b);
-  canvas.setTextColor(ST77XX_WHITE);
-  canvas.setCursor(4, 14);
-  canvas.print("TCS3430");
-
-  // Draw 4 channel bars
-  uint16_t barHeight = BAR_BOTTOM - BAR_TOP;
-  for (uint8_t i = 0; i < 4; i++) {
-    uint16_t h = (uint32_t)vals[i] * barHeight / maxVal;
-    if (h < 1 && vals[i] > 0)
-      h = 1;
-
-    uint16_t bx = BAR_LEFT + i * (BAR_WIDTH + BAR_GAP);
-    uint16_t by = BAR_BOTTOM - h;
-
-    canvas.fillRect(bx, by, BAR_WIDTH, h, barColors[i]);
-
-    // Label below bar
-    canvas.setFont(NULL);
-    canvas.setTextColor(barColors[i]);
-    uint16_t lx = bx + (BAR_WIDTH - strlen(barLabels[i]) * 6) / 2;
-    canvas.setCursor(lx, BAR_BOTTOM + 4);
-    canvas.print(barLabels[i]);
-
-    // Value on top
-    canvas.setTextColor(ST77XX_WHITE);
-    char vbuf[6];
-    itoa(vals[i], vbuf, 10);
-    lx = bx + (BAR_WIDTH - strlen(vbuf) * 6) / 2;
-    uint16_t vy = by - 2;
-    if (vy < BAR_TOP)
-      vy = BAR_TOP;
-    canvas.setCursor(lx, vy);
-    canvas.print(vbuf);
-  }
-
-  // Color swatch from XYZ
+  // Compute color swatch from XYZ
   float fx = (float)x / 65535.0f;
   float fy = (float)y / 65535.0f;
   float fz = (float)z / 65535.0f;
   uint16_t swatchColor = xyzToRGB565(fx, fy, fz);
-  canvas.fillRoundRect(SWATCH_X, SWATCH_Y, SWATCH_W, SWATCH_H, 4, swatchColor);
-  canvas.drawRoundRect(SWATCH_X, SWATCH_Y, SWATCH_W, SWATCH_H, 4, ST77XX_WHITE);
 
-  // CIE, CCT, Lux text
-  canvas.setFont(NULL);
+  canvas.fillScreen(ST77XX_BLACK);
+
+  // Title bar
+  canvas.setFont(&FreeSans9pt7b);
+  canvas.setTextColor(ST77XX_WHITE);
+  canvas.setCursor(4, 13);
+  canvas.print("Adafruit TCS3430 Demo");
+
+  // Color swatch (left zone)
+  canvas.drawRect(SWATCH_X - 1, SWATCH_Y - 1, SWATCH_W + 2, SWATCH_H + 2,
+                  ST77XX_WHITE);
+  canvas.fillRect(SWATCH_X, SWATCH_Y, SWATCH_W, SWATCH_H, swatchColor);
+
+  // Channel readout (right zone)
+  uint16_t textX = LEFT_W + 8;
+  uint16_t textY = TITLE_H + 18;
+  uint16_t lineStep = 18;
+  canvas.setFont(&FreeSansBold12pt7b);
+
+  canvas.setTextColor(ST77XX_RED);
+  canvas.setCursor(textX, textY);
+  canvas.print("X:");
+  canvas.println(x);
+
+  canvas.setTextColor(ST77XX_GREEN);
+  canvas.setCursor(textX, textY + lineStep);
+  canvas.print("Y:");
+  canvas.println(y);
+
+  canvas.setTextColor(0x001F); // blue
+  canvas.setCursor(textX, textY + lineStep * 2);
+  canvas.print("Z:");
+  canvas.println(z);
+
+  // CIE / CCT / Lux in smaller font below
+  canvas.setFont(&FreeSans9pt7b);
   canvas.setTextColor(ST77XX_WHITE);
 
   float cie_x = 0, cie_y = 0;
+  uint16_t infoY = textY + lineStep * 3 + 4;
+
   if (tcs.getCIE(&cie_x, &cie_y)) {
-    canvas.setCursor(TEXT_X, TEXT_Y);
+    canvas.setCursor(textX, infoY);
     canvas.print("CIE ");
     canvas.print(cie_x, 3);
     canvas.print(",");
     canvas.print(cie_y, 3);
 
-    canvas.setCursor(TEXT_X, TEXT_Y + 12);
-    canvas.print("CCT ");
+    canvas.setCursor(textX, infoY + 16);
     canvas.print((int)tcs.getCCT());
-    canvas.print(" K");
-
-    canvas.setCursor(TEXT_X, TEXT_Y + 24);
-    canvas.print("Lux ");
+    canvas.print("K  ");
     canvas.print(tcs.getLux(), 0);
+    canvas.print(" lux");
   }
 
-  // Bottom status line
-  canvas.setCursor(BAR_LEFT, 124);
-  canvas.setTextColor(0x7BEF); // gray
-  canvas.print("G:64X  T:100ms");
-
-  display.drawRGBBitmap(0, 0, canvas.getBuffer(), 240, 135);
+  display.drawRGBBitmap(0, 0, canvas.getBuffer(), SCREEN_W, SCREEN_H);
   delay(200);
 }
