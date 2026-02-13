@@ -429,11 +429,10 @@ bool Adafruit_TCS3430::isALSSaturated() {
  *    @return true on success
  */
 bool Adafruit_TCS3430::clearALSSaturated() {
+  // Write 0x80 to STATUS to clear saturation flag
   Adafruit_BusIO_Register status_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_STATUS);
-  Adafruit_BusIO_RegisterBits asat_bit =
-      Adafruit_BusIO_RegisterBits(&status_reg, 1, 7);
-  return asat_bit.write(1);
+  return status_reg.write(0x80);
 }
 
 /*!
@@ -453,11 +452,12 @@ bool Adafruit_TCS3430::isALSInterrupt() {
  *    @return true on success
  */
 bool Adafruit_TCS3430::clearALSInterrupt() {
+  // Write 0xFF to STATUS to clear all flags. Note: if the threshold
+  // condition still exists and ALS is running, AINT will re-fire
+  // on the next integration cycle.
   Adafruit_BusIO_Register status_reg =
       Adafruit_BusIO_Register(i2c_dev, TCS3430_REG_STATUS);
-  Adafruit_BusIO_RegisterBits aint_bit =
-      Adafruit_BusIO_RegisterBits(&status_reg, 1, 4);
-  return aint_bit.write(1);
+  return status_reg.write(0xFF);
 }
 
 /*!

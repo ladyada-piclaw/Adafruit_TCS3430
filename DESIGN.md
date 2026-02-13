@@ -32,6 +32,9 @@
 | 0xD6 | AZ_CONFIG | R/W | AZ_MODE bit 7, AZ_NTH_ITERATION [6:0] |
 | 0xDD | INTENAB | R/W | ASIEN bit 7 (sat int), AIEN bit 4 (ALS int) |
 
+## Hardware Notes
+- **INT pin:** Breakout has an inverter on INT output for level shifting. Sensor is active-low open-drain, inverter is also open-drain. Needs INPUT_PULLUP. Active-HIGH at MCU.
+
 ## Gain Settings
 | Enum | AGAIN[1:0] | HGAIN | Effective Gain |
 |------|-----------|-------|----------------|
