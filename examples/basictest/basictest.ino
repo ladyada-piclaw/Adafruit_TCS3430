@@ -1,0 +1,64 @@
+/*!\
+ * @file basictest.ino
+ *
+ * Basic test sketch for TCS3430 XYZ Tristimulus Color Sensor
+ * Reads raw channels, CIE x/y chromaticity, lux, and CCT
+ *
+ * Limor 'ladyada' Fried with assistance from Claude Code
+ * MIT License
+ */
+
+#include "Adafruit_TCS3430.h"
+
+Adafruit_TCS3430 tcs = Adafruit_TCS3430();
+
+void setup() {
+  Serial.begin(115200);
+  while (!Serial) {
+    delay(10);
+  }
+
+  Serial.println(F("TCS3430 Basic Test"));
+
+  if (!tcs.begin()) {
+    Serial.println(F("Failed to find TCS3430 chip"));
+    while (1) {
+      delay(10);
+    }
+  }
+
+  Serial.println(F("TCS3430 found!"));
+}
+
+void loop() {
+  uint16_t x, y, z, ir1;
+  if (!tcs.getChannels(&x, &y, &z, &ir1)) {
+    Serial.println(F("Failed to read channels"));
+    delay(1000);
+    return;
+  }
+
+  Serial.print(F("X: "));
+  Serial.print(x);
+  Serial.print(F("  Y: "));
+  Serial.print(y);
+  Serial.print(F("  Z: "));
+  Serial.print(z);
+  Serial.print(F("  IR1: "));
+  Serial.println(ir1);
+
+  float cie_x = 0.0f, cie_y = 0.0f;
+  if (tcs.getCIE(&cie_x, &cie_y)) {
+    Serial.print(F("  CIE x: "));
+    Serial.print(cie_x, 4);
+    Serial.print(F("  y: "));
+    Serial.print(cie_y, 4);
+    Serial.print(F("  Lux: "));
+    Serial.print(tcs.getLux(), 1);
+    Serial.print(F("  CCT: "));
+    Serial.print(tcs.getCCT(), 0);
+    Serial.println(F(" K"));
+  }
+
+  delay(1000);
+}
